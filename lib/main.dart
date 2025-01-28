@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import 'home_page.dart';
+
 void main() {
   runApp(DataApp());
 }
