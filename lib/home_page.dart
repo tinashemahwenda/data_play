@@ -13,21 +13,25 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String data = '';
-  late String type;
+  String type = '';
   String punchline = '';
 
   Future<void> fetchData() async {
-    final response = await http
-        .get(Uri.parse('https://official-joke-api.appspot.com/random_joke'));
-    if (response.statusCode == 200) {
-      setState(() {
-        data = json.decode(response.body)['setup'];
-        type = json.decode(response.body)['type'];
-        punchline = json.decode(response.body)['punchline'];
-        print(data);
-      });
-    } else {
-      print(response);
+    try {
+      final response = await http
+          .get(Uri.parse('https://official-joke-api.appspot.com/random_joke'));
+      if (response.statusCode == 200) {
+        setState(() {
+          data = json.decode(response.body)['setup'];
+          type = json.decode(response.body)['type'];
+          punchline = json.decode(response.body)['punchline'];
+          print(data);
+        });
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      print('Error: $e');
     }
   }
 
@@ -40,12 +44,8 @@ class _HomePageState extends State<HomePage> {
           children: [
             Spacer(),
             Spacer(),
-            ShadButton(
-              child: Text('Load data'),
-              onPressed: () => fetchData(),
-            ),
             Spacer(),
-            ShadBadge(child: Text(type)),
+            type == '' ? Text('') : ShadBadge(child: Text(type)),
             Text(
               data,
               style: ShadTheme.of(context).textTheme.p,
@@ -55,6 +55,10 @@ class _HomePageState extends State<HomePage> {
               style: ShadTheme.of(context).textTheme.p,
             ),
             Spacer(),
+            ShadButton(
+              child: Text('Next Joke'),
+              onPressed: () => fetchData(),
+            ),
             Spacer(),
             Spacer()
           ],
