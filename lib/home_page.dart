@@ -25,7 +25,6 @@ class _HomePageState extends State<HomePage> {
           data = json.decode(response.body)['setup'];
           type = json.decode(response.body)['type'];
           punchline = json.decode(response.body)['punchline'];
-          print(data);
         });
       } else {
         throw Exception('Failed to load data');
